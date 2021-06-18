@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -8,14 +10,26 @@ import 'auth_view.dart';
 
 void main() async {
   await dotenv.load(fileName: "production.env");
-  runApp(MyApp());
+  late String supabaseUrl;
+
+  // For development purposes when testing locally on Android
+  if(Platform.isAndroid){
+    supabaseUrl = 'http://10.0.2.2:8989';
+  }else{
+    supabaseUrl = dotenv.env['SUPABASE_URL']!;
+  }
+  final SupabaseClient supabaseClient = SupabaseClient(
+    supabaseUrl,
+    dotenv.env['SUPABASE_KEY']!
+  );
+
+  runApp(MyApp(supabaseClient));
 }
 
 class MyApp extends StatelessWidget {
-  final SupabaseClient supabaseClient = SupabaseClient(
-    dotenv.env['SUPABASE_URL']!,
-    dotenv.env['SUPABASE_KEY']!
-  );
+  final SupabaseClient supabaseClient;
+
+  MyApp(this.supabaseClient);
 
   @override
   Widget build(BuildContext context) {
@@ -53,5 +67,3 @@ class Home extends StatelessWidget {
     }
   }
 }
-
-

@@ -67,10 +67,11 @@ class _AuthViewState extends State<AuthView> {
 
         if (error != null) {
           message = 'Sign in failed. Check username or password.';
-          print(error);
+          showSnackBar(context, message);
         } else {
           if (value.error?.message != null) {
             message = value.error!.message;
+            showSnackBar(context, message);
           }else{
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) {
@@ -80,7 +81,6 @@ class _AuthViewState extends State<AuthView> {
           }
         }
 
-        showSnackBar(context, message);
         setState(() {
           _loading = false;
         });
@@ -98,12 +98,10 @@ class _AuthViewState extends State<AuthView> {
 
         if (error != null) {
           message = 'Sign up failed. Please try again.';
-          print(error);
         } else {
           if (value.error?.message != null) {
             message = value.error!.message;
           }
-          print(value.error?.message);
         }
         showSnackBar(context, message);
         setState(() {

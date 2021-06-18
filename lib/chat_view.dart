@@ -73,14 +73,6 @@ class _ChatViewState extends State<ChatView> {
   }
 
   void sendMessage(String message){
-    // String username = 'default';
-    // if(Platform.isAndroid)
-    //   username = 'Android';
-    // if(Platform.isIOS)
-    //   username = 'iOS';
-    // if(Platform.isWindows)
-    //   username = 'Windows';
-
     String username = _supabaseClient.auth.currentUser!.email;
     username = username.split('@').first;
 
@@ -190,28 +182,34 @@ class MessageFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Expanded(
-          child: Container(
-            height: 40,
-            padding: EdgeInsets.only(left: 5, right: 5),
-            child: TextFormField(
-              onEditingComplete: () => submitMessage(),
-              autofocus: true,
-              controller: textEditingController,
-              decoration: InputDecoration(
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(5,0,5,5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Container(
+              height: 40,
+              padding: EdgeInsets.only(right: 5),
+              child: TextFormField(
+                onEditingComplete: () => submitMessage(),
+                autofocus: true,
+                controller: textEditingController,
+                decoration: InputDecoration(
                   border: OutlineInputBorder()
+                ),
               ),
             ),
           ),
-        ),
-        ElevatedButton(
-          child: Icon(Icons.send),
-          onPressed: () => submitMessage(),
-        ),
-      ],
+          SizedBox(
+            height: 40,
+            child: ElevatedButton(
+              child: Icon(Icons.send),
+              onPressed: () => submitMessage(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
